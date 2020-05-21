@@ -1,0 +1,5 @@
+/.idea
+/data/bot.session
+/data/database
+/__pycache__
+/venv
