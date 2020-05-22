@@ -2,5 +2,5 @@
   "welcome": "\uD83D\uDC68\u200D\uD83D\uDCBB Assalom aleykum xush kelibsiz.\nBuyurtma berish uchun\n\uD83D\uDCBB <code>Buyurtma berish</code>\ntugmasini bosing.",
   "order": "\uD83D\uDC68\u200D\uD83D\uDCBB {user} buyurtma qabul qilindi.\nSiz bilan aloqaga chiqishadi.",
   "block": "\uD83D\uDC68\u200D\uD83D\uDCBB Hurmatli {user} siz nojo'ya haraktingiz va har xil so'zlarni yozganingiz sababli bloklandingiz.\nBotdan foydalana olmaysiz.",
-  "click_order": "\uD83D\uDC68\u200D\uD83D\uDCBB Hurmatli {user} buyurtma bermoqchi bo'lgan narsangiz haqida batafsil to'liq shaklda ma'lumotlarni yozib yuboring!"
+  "click_order": "\uD83D\uDC68\u200D\uD83D\uDCBB Hurmatli {user} buyurtma bermoqchi bo'lgan narsangiz haqida batafsil to'liq shaklda ma'lumotlarni yozib yuboring!\n\nMasalan: Kurs ishi, ingliz tili fanidan, 40 list, 25-maygacha, mavzu \"The method of \"Steam of consciousness in Faulkner's works.\""
 }
