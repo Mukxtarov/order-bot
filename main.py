@@ -6,8 +6,8 @@ import sys
 
 from telethon import TelegramClient, events, Button
 from telethon.tl.types import PeerChannel
-from Database import Db as db
-from Helper import Helper
+from database import Db as db
+from helper import Helper as helper
 from datetime import datetime
 
 """ config.json file ichidagi sozlamarni chaqirish massiv holatida """
@@ -38,7 +38,7 @@ async def start(event):
         event.sender.last_name
     )
 
-    if not Helper.isChannel(event.message):
+    if not helper.isChannel(event.message):
         return
 
     db.insertUser({
@@ -85,7 +85,7 @@ async def order(event):
         event.sender.last_name
     )
 
-    if not Helper.isChannel(event.message):
+    if not helper.isChannel(event.message):
         return
 
     if status['status'] != "order":
@@ -106,15 +106,39 @@ async def order(event):
 
     await bot.send_message(
         channel,
-        "👨‍💻 Buyurtma: <b>{}</b>\n👨‍💻 Buyurtmachi: #{} | <a href='tg://user?id={}'>{}</a>\n\n✅ Matn:\n\n{}‍".format(
-            order['id'], event.sender.id, event.sender.id, fullname.replace('None', ''), event.message.message
+        "\n🔔 Buyurtma raqami: <b>№ {}</b>\n👤 Buyurtmachi: <a href='tg://user?id={}'>#{}</a>\n\n⚠️ Buyurtma haqida ma'lumot:\n\n<b>{}</b>‍".format(
+            order['id'], event.sender.id, event.sender.id, event.message.message
         ),
+        buttons=[[Button.inline("Qabul qildim ✅", data="order_accepted={}".format(event.sender.id))]],
         parse_mode='HTML'
     )
     status['status'] = "order_success"
-    await event.reply(message['order'].replace('{user}', fullname.replace('None', '')), parse_mode="HTML")
+    await event.reply(
+        message['order'].replace('{user}', fullname.replace('None', '')), 
+        parse_mode="HTML"
+    )
     raise events.StopPropagation
 
+
+@bot.on(events.CallbackQuery(func=lambda e: e.data.decode('UTF-8') == "order_accepted={}".format(re.findall('[0-9]{1,15}$', e.data.decode('UTF-8'))[0])))
+async def order_accepted(event):
+    data = int(re.findall('[0-9]{1,15}$', event.data.decode('UTF-8'))[0])
+    
+    order = db.selectOrder(data)
+    
+    fullname = "{} {}".format(
+        event.sender.first_name,
+        event.sender.last_name
+    )
+
+    await event.edit(
+        "\n🔔 Buyurtma raqami: <b>№ {}</b>\n👤 Buyurtmachi: <a href='tg://user?id={}'>#{}</a>\n\n⚠️ Buyurtma haqida ma'lumot:\n\n<b>{}</b>\n\n‍✅ Qabul qildi: <a href='tg://user?id={}'>{}</a>".format(
+            order['id'], data, data, order['order_text'], event.sender.id, fullname.replace('None', '')
+        ), 
+        parse_mode="HTML"
+    )
+    raise events.StopPropagation
+    
 
 def main():
     bot.run_until_disconnected()

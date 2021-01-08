@@ -52,6 +52,10 @@ class Db(object):
         return db.table('orders').select('id').order_by('id', 'desc').first()
 
     @staticmethod
+    def selectOrder(user_id):
+        return db.table('orders').select('*').where("user_id", "=", user_id).order_by('id', 'desc').first()
+
+    @staticmethod
     def blockUser(user_id):
         return db.table('users').where("user_id", "=", user_id).update(block=1)
 
